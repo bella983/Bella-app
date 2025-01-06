@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BellaApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jetbrains-mono/1.0.6/web/jetbrains-mono.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #007AFF;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .task-list {
+            background-color: #1C1C1E;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .task-item {
+            padding: 16px;
+            border-bottom: 1px solid #2C2C2E;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-title {
+            font-size: 16px;
+        }
+
+        .task-button {
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .task-button:hover {
+            background-color: #0064D1;
+        }
+
+        .task-button.completed {
+            background-color: #30D158;
+        }
+
+        .task-button:disabled {
+            background-color: #30D158;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BellaApp</h1>
+        </div>
+        <div class="task-list" id="taskList">
+        </div>
+    </div>
+
+    <script>
+        const tasks = [
+            {
+                id: 1,
+                title: "Subscribe to Telegram Channel",
+                type: "telegram",
+                url: "https://t.me/yourchannel",
+                completed: false
+            },
+            {
+                id: 2,
+                title: "Complete Profile Setup",
+                type: "regular",
+                completed: false
+            },
+            {
+                id: 3,
+                title: "Enable Notifications",
+                type: "regular",
+                completed: false
+            }
+        ];
+
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            tasks.forEach(task => {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+
+                const taskTitle = document.createElement('span');
+                taskTitle.className = 'task-title';
+                taskTitle.textContent = task.title;
+
+                const button = document.createElement('button');
+                button.className = `task-button ${task.completed ? 'completed' : ''}`;
+                button.textContent = task.completed ? 'Completed' : 'Start';
+                button.disabled = task.completed;
+
+                button.addEventListener('click', () => {
+                    if (task.type === 'telegram') {
+                        window.open(task.url, '_blank');
+                    }
+                    task.completed = true;
+                    renderTasks();
+                });
+
+                taskItem.appendChild(taskTitle);
+                taskItem.appendChild(button);
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        // Initial render
+        renderTasks();
+    </script>
+</body>
+</html>
